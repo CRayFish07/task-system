@@ -1,0 +1,187 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 49px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #424242;
+    border-right: 1px solid #eee;
+      opacity: .9;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -15px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+    text-align: left;
+    text-decoration: none;
+    color: white;
+    font-size: 13px;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    color: #f0f0f0;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    background-color: #272727;
+    opacity: .9;
+
+}
+.nav-sidebar > li a:hover{
+    background-color: #272727;
+}
+.nav-sidebar a{
+    color: #f0f0f0;
+    background: #424242;
+    border-bottom: solid 1px #2b2b2b;
+}
+
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+/*index�Ĵ�ֱ����һ�������˵���ʽ*/
+body {
+		}
+		/*���˵�*/
+		.sidebar-menu{
+			border-right: 1px solid #c4c8cb;
+		}
+		/*һ���˵�*/
+		.menu-first{
+			height: 50px;
+			line-height: 40px;
+            background-color: #424242;
+			border-bottom: 1px solid #e1e1e1;
+			padding: 0;
+			font-size: 18px;
+			font-weight: normal;
+			text-align: center;
+		}
+		/*һ���˵���껮��״̬*/
+		.menu-first:hover{
+			text-decoration: none;
+			background-color: #d6d4d5;
+            border-bottom: solid 1px #2b2b2b;
+		}
+		/*�����˵�*/
+		.menu-second li a{
+			background-color: #272727 !important;
+			height: 40px;
+			line-height: 37px;
+            border-bottom: solid 1px #2b2b2b;
+			font-size: 14px;
+			text-align: left;
+            padding-left: 35px !important;
+		}
+		/*�����˵���껮����ʽ*/
+		.menu-second li a:hover {
+			text-decoration: none;
+			border-left: 10px solid  #f8881c;
+		}
+		/*�����˵�ѡ��״̬*/
+		.menu-second-selected {
+			background-color: #66c3ec;
+			height:31px;
+			line-height:31px;
+			border-top: 1px solid #83ceed;
+			border-bottom: 1px solid #83ceed;
+			border-right: 3px solid #f8881c;
+			border-left: 3px solid #66c3ec;
+			text-align:center;
+		}
+		/*����bootstrap����ʽ*/
+		.nav-list,.nav-list li a{
+			padding: 0px;
+			margin: 0px;
+		}
+        .nav > li{
+
+        }
+        .side-title{
+            text-align: center;
+            color: #fefefe;
+            font-size: 22px;
+            height: 30px;
+
+        }
