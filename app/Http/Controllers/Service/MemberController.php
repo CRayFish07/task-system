@@ -7,8 +7,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lib\REST;
 use App\Tools\ToolsFun;
-use App\Model\Valicode;
-use App\Model\Member;
+use App\Model\Valicodes;
+use App\Model\Members;
 use App\Tools\M3result;
 
 class MemberController extends Controller
@@ -18,8 +18,9 @@ class MemberController extends Controller
         $phone = $request->input("phone",'');
         $password = $request->input('password','');
         $m3 = new M3result();
-        $member = new Member();
+        $member = new Members();
         $pwd =  $member->where('phone',$phone)->first()->password;
+
         if (md5($password)==$pwd){
             $request->session()->put("member",$member);
             $m3->status = 0;
@@ -35,7 +36,7 @@ class MemberController extends Controller
     public function sendsms($phone){
         $valicode =  ToolsFun::getValiCode();
         $this->sendTemplateSMS($phone,array($valicode,'1'),'1');
-        $valicodeModel = new Valicode();
+        $valicodeModel = new Valicodes();
         $valicodeModel->valicode = $valicode;
         $valicodeModel->phone = $phone;
         $valicodeModel->save();
@@ -45,7 +46,7 @@ class MemberController extends Controller
     }
 
     public function register(Request $request){
-         $valicodeModel = new Valicode();
+         $valicodeModel = new Valicodes();
          $valicode = $valicodeModel->where('phone','15697323025')->orderBy("created_at","desc")->first();
          $vcode = $valicode->valicode;
          $yanzhengma = $request->input("yanzhengma");
@@ -53,7 +54,7 @@ class MemberController extends Controller
             $user_name = $request->input("zhuceuser",'');
             $pwd = $request->input("zhucepwd",'');
             $phone = $request->input('phone','');
-            $member = new Member();
+            $member = new Members();
             $member->user_name = $user_name;
             $member->password = md5($pwd);
             $member->phone = $phone;

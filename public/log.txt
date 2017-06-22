@@ -254,3 +254,51 @@ response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     </TemplateSMS>
 </Response>
 
+request body = <TemplateSMS>
+                    <to>15697323025</to> 
+                    <appId>8aaf07085c9b999c015ca1715ed0053b</appId>
+                    <templateId>1</templateId>
+                    <datas><data>3052</data><data>1</data></datas>
+                  </TemplateSMS>
+request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a216da85c09e9ba015c1a48cf5f08be/SMS/TemplateSMS?sig=A135DD2031157334D17A6D0CBFE47A2F
+response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Response>
+    <statusCode>000000</statusCode>
+    <TemplateSMS>
+        <smsMessageSid>08a30587921c4f77aa2b3c64a71a7a98</smsMessageSid>
+        <dateCreated>20170622221635</dateCreated>
+    </TemplateSMS>
+</Response>
+
+request body = <TemplateSMS>
+                    <to>15697323025</to> 
+                    <appId>8aaf07085c9b999c015ca1715ed0053b</appId>
+                    <templateId>1</templateId>
+                    <datas><data>5987</data><data>1</data></datas>
+                  </TemplateSMS>
+request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a216da85c09e9ba015c1a48cf5f08be/SMS/TemplateSMS?sig=E97EDE3BBB0AD148FC71E11B1CFD77A0
+response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Response>
+    <statusCode>000000</statusCode>
+    <TemplateSMS>
+        <smsMessageSid>441bb6723e594b08b60db88c4988def0</smsMessageSid>
+        <dateCreated>20170622222051</dateCreated>
+    </TemplateSMS>
+</Response>
+
+request body = <TemplateSMS>
+                    <to>15697323025</to> 
+                    <appId>8aaf07085c9b999c015ca1715ed0053b</appId>
+                    <templateId>1</templateId>
+                    <datas><data>5067</data><data>1</data></datas>
+                  </TemplateSMS>
+request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a216da85c09e9ba015c1a48cf5f08be/SMS/TemplateSMS?sig=E5BBF0F18F16CCEE9E2C3AB47EDFFED3
+response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Response>
+    <statusCode>000000</statusCode>
+    <TemplateSMS>
+        <smsMessageSid>58cb63c4e0244b8aa51acba119bf36d7</smsMessageSid>
+        <dateCreated>20170622222324</dateCreated>
+    </TemplateSMS>
+</Response>
+
