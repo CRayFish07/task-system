@@ -21,6 +21,10 @@ class CreateMembersTable extends Migration
             $table->string("photo",100);
             $table->timestamps();
         });
+         Schema::table('members', function($table)
+        {
+            $table->string("uuid",50);
+        });
     }
 
     /**
