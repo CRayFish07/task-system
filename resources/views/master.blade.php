@@ -166,7 +166,7 @@
                         <li class="purple">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <i class="icon-bell-alt icon-animated-bell"></i>
-                                <span class="badge badge-important">0</span>
+                                <span class="badge badge-important">{{count($band)}}</span>
                             </a>
 
                             <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close" id="messages">
@@ -174,6 +174,22 @@
                                     <i class="icon-warning-sign"></i>
                                     0 Notifications
                                 </li>
+                                @if ($band!=null)
+                                    @for($i=0;$i<count($band);$i++)
+                                        <li>
+                                            <a href="javascript:;" class="msg{{$band[$i]->id}}">
+                                                <div class="clearfix">
+                                                    <span class="pull-left">
+                                                <i class="btn btn-xs no-hover btn-pink icon-comment"></i>
+                                                        <i id="msgdata">{{$band[$i]->send_name}}</i>
+                                                        <input type="hidden" value="{{$band[$i]->content}}" id="hiddata">
+                                                </span>
+                                                    <span class="pull-right badge badge-info"></span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                    @endfor
+                                    @endif
                             </ul>
                         </li>
 
@@ -658,15 +674,40 @@
 
 </body>
 <script type="text/javascript">
-$("#bind").click(function() {
-     $.ajax({
-        type:'get',
-        url: 'View/bind',
-        success: function(data) {
-            $(".page").html(data);
-        }
-    })
-})
+        $("#bind").click(function() {
+             $.ajax({
+                type:'get',
+                url: 'View/bind',
+                success: function(data) {
+                    $(".page").html(data);
+                }
+            })
+        })
+        $("#messages li").each(function (i) {
+            var send_name = $(this).find('#msgdata').text();
+            var content = $(this).find("#hiddata").val();
+            console.log(send_name);
+            $(this).click(function () {
+                layer.msg('你确定要绑定？'+send_name, {
+                    time: 0 //不自动关闭
+                    ,btn: ['确定', '取消'+content]
+                    ,yes: function(index){
+                        layer.close(index);
+                        layer.msg('绑定成功');
+                    }
+                });
+            })
+        })
+        $('.msg').on('click', function () {
+            layer.msg('你确定要绑定？', {
+                time: 0 //不自动关闭
+                ,btn: ['确定', '取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    layer.msg('绑定成功');
+                }
+            });
+        })
 
         $(document).ready(function () {
             // 连接服务端
@@ -677,37 +718,36 @@ $("#bind").click(function() {
             });
             // 后端推送来消息时
             socket.on('new_msg', function(msg){
-                 if (msg !=="") 
-                 {
-                    $.ajax({
-                        type:"get",
-                        url:"Service/messagesadd",
-                        success:function(data) {
-                            
-                        }
-                    })
-                    $(".badge-important").text(parseInt($(".badge-important").text())+1);
-                    var html =    '<li>'+
-                                    '<a href="#">'+
-                                        '<div class="clearfix">'+
-                                            '<span class="pull-left msg">'+
-                                                '<i class="btn btn-xs no-hover btn-pink icon-comment"></i>'+
-                                                msg+
-                                            '</span>'+
-                                            '<span class="pull-right badge badge-info"></span>'+
-                                        '</div>'+
-                                    '</a>'+
-                                '</li>';
-                    $("#messages").append(html);
+                 if (msg !=="") {
+                     $(".badge-important").text(parseInt($(".badge-important").text()) + 1);
+                     var html = '<li>' +
+                         '<a href="javascript:;" class="msg">' +
+                         '<div class="clearfix">' +
+                         '<span class="pull-left">' +
+                         '<i class="btn btn-xs no-hover btn-pink icon-comment"></i>' +
+                         msg +
+                         '</span>' +
+                         '<span class="pull-right badge badge-info"></span>' +
+                         '</div>' +
+                         '</a>' +
+                         '</li>';
+                     $("#messages").append(html);
 
-                    $('.msg').on('click', function(){
-                      layer.msg('Hello layer');
-                    });
+                     $('.msg').on('click', function () {
+                         layer.msg('你确定要绑定？', {
+                             time: 0 //不自动关闭
+                             ,btn: ['确定', '取消']
+                             ,yes: function(index){
+                                 layer.close(index);
+                                 layer.msg('绑定成功');
+                             }
+                         });
+                     })
+
+                     console.log(msg);
                  }
+            })
 
-
-                 console.log(msg);
-            });
             // 后端推送来在线数据时
             // socket.on('update_online_count', function(online_stat){
             //     $('#online_box').html(online_stat);

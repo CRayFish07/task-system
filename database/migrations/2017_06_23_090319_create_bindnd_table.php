@@ -16,6 +16,8 @@ class CreateBindndTable extends Migration
             $table->increments('id');
             $table->integer('boss_id');
             $table->integer('under_id');
+            $table->string("send_name",20);
+            $table->string("content",100);
             $table->integer("status")->default(0);
             $table->timestamps();
         });

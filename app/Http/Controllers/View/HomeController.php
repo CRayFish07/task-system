@@ -6,13 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Model\Usernotice;
+use App\Model\Band;
 
 class HomeController extends Controller
 {
 
     public function home(){
        $user = session("member");
-       return View("home")->with('user',$user);
+//       $message = Usernotice::where('user_id',$user->id)->where("noticetype",10)->first();
+       $band = Band::where("boss_id",$user->id)->where('status',0)->get();
+       return View("home")->with('user',$user)->with('band',$band);
     }
     /**
      * Display a listing of the resource.

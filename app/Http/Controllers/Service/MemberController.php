@@ -10,7 +10,7 @@ use App\Tools\ToolsFun;
 use App\Model\Valicodes;
 use App\Model\Members;
 use App\Tools\M3result;
-use App\Model\Usernotice;
+use App\Model\Band;
 
 class MemberController extends Controller
 {
@@ -18,25 +18,11 @@ class MemberController extends Controller
     public function messagesadd()
     {
        
-         $member = session("member");
-        $usernotice = Usernotice::where("user_id",$member->id)->where("noticetype",10)->first();
-        if ($usernotice!=null) {
-            //secend
-            $usernotice->count=$usernotice->count+1;
-            $usernotice->save();
-        }
-        else{
-                  // first add
-            $usernotice = new Usernotice();
-            $usernotice->user_id = $member->id;
-            $usernotice->user_name = $member->user_name;
-            $usernotice->noticetype =10;
-            $usernotice->typeid =1;
-            $usernotice->count = 1;
-            $usernotice->save();
-            }
-      
-       
+//         $member = session("member");
+//         $count = Band::where("boss_id",$member->id)->("status",0)->count();
+//         if ($count == 0){
+//
+//         }
 
     }
     public function login(Request $request){

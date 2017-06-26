@@ -34,7 +34,9 @@ class BandController extends Controller
                 $newBand->boss_id = $boosMember->id;
                 $newBand->under_id = $user->id;
                 $newBand->status = 0;
+                $newBand->send_name = $user->user_name;
                 $newBand->save();
+                Websend::send($user->user_name);
                 $m3->status = 0;
                 $m3->message= "已发送请求";
                 return $m3->toJson();
@@ -42,7 +44,7 @@ class BandController extends Controller
             }
         }
         else{ 
-              Websend::send();
+
               $m3->status =1;
               $m3->message= "不存在的电话号码";
               return $m3->toJson();

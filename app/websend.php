@@ -6,7 +6,7 @@ namespace App;
 */
 class Websend
 {
-	public static function send()
+	public static function send($send_name)
 	{
 	 // 指明给谁推送，为空表示向所有在线用户推送
 	$to_uid = '1';
@@ -14,7 +14,7 @@ class Websend
 	$push_api_url = "http://task.app:2121/";
 	$post_data = array(
 	   'type' => 'publish',
-	   'content' => '这个是推送的测试数据',
+	   'content' => '这个是推送的测试数据'.$send_name,
 	   'to' => $to_uid, 
 	);
 	$ch = curl_init ();
