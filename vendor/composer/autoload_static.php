@@ -281,6 +281,7 @@ class ComposerStaticInit6ad88169007673020de3aa9389018b83
         'CreateMessagesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_22_123623_create_messages_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreateTasksTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_22_124718_create_tasks_table.php',
+        'CreateUsernoticeTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_26_091803_create_usernotice_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CreateValicodesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_22_132343_create_valicodes_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',

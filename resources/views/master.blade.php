@@ -9,11 +9,20 @@
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/ace.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+    <script src='//cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
+    <script src="layer/layer.js"></script>
     @yield('style')
     <title>@yield('title')</title>
     <style type="text/css">
        #navbar{
         height: 45px;
+       }
+       .page{
+            margin-left: 190px;
+    margin-right: 0;
+    margin-top: 0;
+    min-height: 100%;
+    padding: 0;
        }
     </style>
 </head>
@@ -157,63 +166,13 @@
                         <li class="purple">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <i class="icon-bell-alt icon-animated-bell"></i>
-                                <span class="badge badge-important">8</span>
+                                <span class="badge badge-important">0</span>
                             </a>
 
-                            <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                            <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close" id="messages">
                                 <li class="dropdown-header">
                                     <i class="icon-warning-sign"></i>
-                                    8 Notifications
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">
-                                                <i class="btn btn-xs no-hover btn-pink icon-comment"></i>
-                                                New Comments
-                                            </span>
-                                            <span class="pull-right badge badge-info">+12</span>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <i class="btn btn-xs btn-primary icon-user"></i>
-                                        Bob just signed up as an editor ...
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">
-                                                <i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>
-                                                New Orders
-                                            </span>
-                                            <span class="pull-right badge badge-success">+8</span>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">
-                                                <i class="btn btn-xs no-hover btn-info icon-twitter"></i>
-                                                Followers
-                                            </span>
-                                            <span class="pull-right badge badge-info">+11</span>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        See all notifications
-                                        <i class="icon-arrow-right"></i>
-                                    </a>
+                                    0 Notifications
                                 </li>
                             </ul>
                         </li>
@@ -295,7 +254,7 @@
                                 <img class="nav-user-photo" src="assets/avatars/upload/p1.jpg" alt="Jason's Photo">
                                 <span class="user-info">
                                     <small>Welcome,</small>
-                                    Jason
+                                    {{$user->user_name}}
                                 </span>
 
                                 <i class="icon-caret-down"></i>
@@ -371,10 +330,10 @@
                     </div><!-- #sidebar-shortcuts -->
 
                     <ul class="nav nav-list">
-                        <li class="active">
-                            <a href="index.html">
+                        <li class="active" id="bind">
+                            <a href="javascript:;">
                                 <i class="icon-exchange"></i>
-                                <span class="menu-text"> 绑定下属 </span>
+                                <span class="menu-text"> 绑定上司 </span>
                             </a>
                         </li>
 
@@ -699,7 +658,62 @@
 
 </body>
 <script type="text/javascript">
+$("#bind").click(function() {
+     $.ajax({
+        type:'get',
+        url: 'View/bind',
+        success: function(data) {
+            $(".page").html(data);
+        }
+    })
+})
 
+        $(document).ready(function () {
+            // 连接服务端
+            var socket = io('http://'+document.domain+':2120');
+            // 连接后登录
+            socket.on('connect', function(){
+                socket.emit('login', {{$user->id}});
+            });
+            // 后端推送来消息时
+            socket.on('new_msg', function(msg){
+                 if (msg !=="") 
+                 {
+                    $.ajax({
+                        type:"get",
+                        url:"Service/messagesadd",
+                        success:function(data) {
+                            
+                        }
+                    })
+                    $(".badge-important").text(parseInt($(".badge-important").text())+1);
+                    var html =    '<li>'+
+                                    '<a href="#">'+
+                                        '<div class="clearfix">'+
+                                            '<span class="pull-left msg">'+
+                                                '<i class="btn btn-xs no-hover btn-pink icon-comment"></i>'+
+                                                msg+
+                                            '</span>'+
+                                            '<span class="pull-right badge badge-info"></span>'+
+                                        '</div>'+
+                                    '</a>'+
+                                '</li>';
+                    $("#messages").append(html);
+
+                    $('.msg').on('click', function(){
+                      layer.msg('Hello layer');
+                    });
+                 }
+
+
+                 console.log(msg);
+            });
+            // 后端推送来在线数据时
+            // socket.on('update_online_count', function(online_stat){
+            //     $('#online_box').html(online_stat);
+            // });
+        });
+   
 </script>
 @yield('myscript')
 

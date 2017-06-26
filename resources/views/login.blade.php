@@ -1,7 +1,11 @@
-@extends('master')
-@section('title','任务系统')
-@section('style')
-    <style>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>任务系统</title>
+      <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.0.1/jquery.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+        <style>
             .loginmain{
             width: 500px;
             margin: 100px auto;
@@ -27,8 +31,9 @@
             display: none;
             }
     </style>
-@endsection
-@section('content')
+</head>
+<body>
+    
             <div class="main">
                 <div class="loginmain">
                     <form class="form-horizontal" method="post" name="formlogin">
@@ -114,10 +119,8 @@
                     </form>
                 </div>
             </div>
-@endsection
-
-@section('myscript')
-    <script type="text/javascript">
+</body>
+  <script type="text/javascript">
     $(function () {
     $("#zhuce").click(function(){
     $(".loginup").show();
@@ -215,4 +218,6 @@
             }
         }
     </script>
-@endsection
+
+</html>
+  

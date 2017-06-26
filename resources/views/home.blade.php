@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="main-content">爱已布在这里，我却还没</div>
+  
 
 @endsection
 

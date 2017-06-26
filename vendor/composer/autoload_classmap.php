@@ -11,6 +11,7 @@ return array(
     'CreateMessagesTable' => $baseDir . '/database/migrations/2017_06_22_123623_create_messages_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreateTasksTable' => $baseDir . '/database/migrations/2017_06_22_124718_create_tasks_table.php',
+    'CreateUsernoticeTable' => $baseDir . '/database/migrations/2017_06_26_091803_create_usernotice_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CreateValicodesTable' => $baseDir . '/database/migrations/2017_06_22_132343_create_valicodes_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',

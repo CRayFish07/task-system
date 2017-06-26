@@ -10,19 +10,45 @@ use App\Tools\ToolsFun;
 use App\Model\Valicodes;
 use App\Model\Members;
 use App\Tools\M3result;
+use App\Model\Usernotice;
 
 class MemberController extends Controller
 {
 
+    public function messagesadd()
+    {
+       
+         $member = session("member");
+        $usernotice = Usernotice::where("user_id",$member->id)->where("noticetype",10)->first();
+        if ($usernotice!=null) {
+            //secend
+            $usernotice->count=$usernotice->count+1;
+            $usernotice->save();
+        }
+        else{
+                  // first add
+            $usernotice = new Usernotice();
+            $usernotice->user_id = $member->id;
+            $usernotice->user_name = $member->user_name;
+            $usernotice->noticetype =10;
+            $usernotice->typeid =1;
+            $usernotice->count = 1;
+            $usernotice->save();
+            }
+      
+       
+
+    }
     public function login(Request $request){
         $phone = $request->input("phone",'');
         $password = $request->input('password','');
         $m3 = new M3result();
         $member = new Members();
-        $pwd =  $member->where('phone',$phone)->first()->password;
+        $userinfo =  $member->where('phone',$phone)->first();
+        $pwd = $userinfo->password;
 
         if (md5($password)==$pwd){
-            $request->session()->put("member",$member);
+            $request->session()->put("member",$userinfo);
             $m3->status = 0;
             $m3->message ="登录成功";
             return $m3->toJson();

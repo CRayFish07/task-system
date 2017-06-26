@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\View;
 
 use Illuminate\Http\Request;
-
+use App\Model\Members;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -12,6 +12,12 @@ class MemberController extends Controller
 
     public function tologin(){
         return View('login');
+    }
+
+    public function band()
+    {
+        $data = session("member")->id;
+        return View("band")->with('uid',$data);
     }
     /**
      * Display a listing of the resource.

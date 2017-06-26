@@ -26,4 +26,7 @@ Route::get('/home','View\HomeController@home');
 ROute::get("/test",function (){
     return View("test");
 });
+Route::get("View/bind","View\MemberController@band");
+Route::get("Service/band/{phone}","Service\BandController@to_band");
+Route::get("Service/messagesadd","Service\MemberController@messagesadd");
 
