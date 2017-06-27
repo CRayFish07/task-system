@@ -10,10 +10,11 @@ use App\Model\Members;
 use App\Tools\M3result;
 use App\Http\Controllers\Controller;
 use App\Websend;
+use DB;
 
 class BandController extends Controller
 {
-    public function to_band(Request $request,$phone)
+    public function to_band(Request $request,$phone,$content)
     {
         //号码不存在的
         //是否已经绑定
@@ -21,7 +22,7 @@ class BandController extends Controller
         $user = session('member');
         $boosMember = Members::where("phone",$phone)->first();
         if ($boosMember !=null) {
-              $band = Band::where('under_id',$user->id)->where('boss_id',$boosMember->id)->first();
+              $band = Band::where('under_id',$user->member_id)->where('boss_id',$boosMember->member_id)->first();
             if ($band != null) {
               $m3->status =1;
               $m3->message= "已存在";
@@ -31,12 +32,13 @@ class BandController extends Controller
             //存进BIND表
             else{
                 $newBand = new Band();
-                $newBand->boss_id = $boosMember->id;
-                $newBand->under_id = $user->id;
+                $newBand->boss_id = $boosMember->member_id;
+                $newBand->under_id = $user->member_id;
                 $newBand->status = 0;
                 $newBand->send_name = $user->user_name;
+                $newBand->content = $content;
                 $newBand->save();
-                Websend::send($user->user_name);
+                Websend::send($user->member_id,$boosMember->member_id,$user->user_name,$content);
                 $m3->status = 0;
                 $m3->message= "已发送请求";
                 return $m3->toJson();
@@ -52,6 +54,25 @@ class BandController extends Controller
       
         //站内信通知
         
+    }
+
+    public function band_ok(Request $request)
+    {
+        $send_id = $request->input("send_id");
+        $boss_id = $request->input("boss_id");
+        $m3 = new M3result();
+        $affected = DB::update('update band set status = 1 where boss_id = ? and under_id = ?', [$boss_id,$send_id]);
+        if ($affected==1) {
+           $m3->status=0;
+           $m3->message="ok";
+           return $m3->toJson();
+        }
+        else{
+            $m3->status=1;
+            $m3->message="save fail";
+            return $m3->toJson();
+        }
+
     }
     /**
      * Display a listing of the resource.

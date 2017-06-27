@@ -13,7 +13,7 @@ class CreateBindndTable extends Migration
     public function up()
     {
         Schema::create('band', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('band_id');
             $table->integer('boss_id');
             $table->integer('under_id');
             $table->string("send_name",20);

@@ -29,6 +29,12 @@
 				</div>
 	</div>
 	<div class="space-4"></div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label no-padding-right" for="form-field-1">附加信息</label>
+				<div class="col-sm-9">
+				<input type="text" id="content" placeholder="content" class="col-xs-10 col-sm-5">
+				</div>
+	</div>
 	<div class="col-md-offset-3 col-md-9">
 		<button class="btn btn-info" type="button" id="band_btn"><i class="icon-ok bigger-110"></i>绑定</button>
 		
@@ -40,9 +46,10 @@
 	<script type="text/javascript">
 		$("#band_btn").click(function(argument) {
 			var phone = $("#phone").val();
+			var content = $("#content").val();
 			 $.ajax({
 			 	type:"get",
-			 	url:"Service/band/"+phone,
+			 	url:"Service/band/"+phone+"/"+content,
 			 	dataType:"json",
 			 	success: function (data) {
 			 		alert(data.message);

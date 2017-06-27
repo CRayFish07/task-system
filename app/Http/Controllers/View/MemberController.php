@@ -16,7 +16,7 @@ class MemberController extends Controller
 
     public function band()
     {
-        $data = session("member")->id;
+        $data = session("member")->member_id;
         return View("band")->with('uid',$data);
     }
     /**

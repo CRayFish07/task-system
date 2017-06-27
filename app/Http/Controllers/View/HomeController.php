@@ -8,15 +8,19 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Usernotice;
 use App\Model\Band;
+use App\Model\Members;
 
 class HomeController extends Controller
 {
 
     public function home(){
        $user = session("member");
-//       $message = Usernotice::where('user_id',$user->id)->where("noticetype",10)->first();
-       $band = Band::where("boss_id",$user->id)->where('status',0)->get();
-       return View("home")->with('user',$user)->with('band',$band);
+       $band = Band::where("boss_id",$user->member_id)->where('status',0)->get();
+       $bossf = Band::where("under_id",$user->member_id)->lists('boss_id');
+       $bossfriend = Members::whereIn("member_id",$bossf)->get();
+       $underf = Band::where("boss_id",$user->member_id)->lists('under_id');
+       $underfriend = Members::whereIn("member_id",$underf)->get();
+       return View("home")->with('user',$user)->with('band',$band)->with('bossfriend',$bossfriend)->with("underfriend",$underfriend);
     }
     /**
      * Display a listing of the resource.

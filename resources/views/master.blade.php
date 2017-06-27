@@ -48,7 +48,7 @@
                         <li class="relation">
                               <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <i class="icon-group"></i>
-                                <span class="badge badge-grey">4</span>
+                                <span class="badge badge-grey">{{count($bossfriend)+count($underfriend)}}</span>
                             </a>
                               <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
                                 <li class="dropdown-header">
@@ -63,13 +63,13 @@
                                                 <i class="btn btn-xs no-hover btn-pink icon-comment"></i>
                                                  上司
                                             </span>
-                                            <span class="pull-right badge badge-info">+12</span>
+                                            <span class="pull-right badge badge-info">{{count($bossfriend)}}</span>
                                         </div>
                                     </a>
                                        <ul class="" id="shangsi" style="cursor: pointer;">
-                                       <li><a href="#">我是一个上司</a></li>
-                                       <li><a href="#">我是一个上司</a></li>
-                                       <li><a href="#">我是一个上司</a></li>
+                                       @for($j=0;$j<count($bossfriend);$j++)
+                                          <li><a href="#">{{$bossfriend[$j]->user_name}}</a></li>
+                                       @endfor
                                        </ul>
                                 </li>
 
@@ -80,11 +80,13 @@
                                                 <i class="btn btn-xs no-hover btn-pink icon-comment"></i>
                                                 下属
                                             </span>
-                                            <span class="pull-right badge badge-info">+12</span>
+                                            <span class="pull-right badge badge-info">{{count($underfriend)}}</span>
                                         </div>
                                     </a>
                                      <ul class="" id="shangsi" style="cursor: pointer;">
-                                       <li>我是一个下司</li>
+                                         @for($j=0;$j<count($underfriend);$j++)
+                                          <li><a href="#">{{$underfriend[$j]->user_name}}</a></li>
+                                       @endfor
                                        </ul>
                                 </li>
 
@@ -172,17 +174,20 @@
                             <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close" id="messages">
                                 <li class="dropdown-header">
                                     <i class="icon-warning-sign"></i>
-                                    0 Notifications
+                                    {{count($band)}} Notifications
                                 </li>
                                 @if ($band!=null)
                                     @for($i=0;$i<count($band);$i++)
-                                        <li>
+                                          <li class="bandmsg">
                                             <a href="javascript:;" class="msg{{$band[$i]->id}}">
                                                 <div class="clearfix">
                                                     <span class="pull-left">
                                                 <i class="btn btn-xs no-hover btn-pink icon-comment"></i>
-                                                        <i id="msgdata">{{$band[$i]->send_name}}</i>
+                                                        <i>{{$band[$i]->send_name}}想绑定你为BOSS</i>
                                                         <input type="hidden" value="{{$band[$i]->content}}" id="hiddata">
+                                                        <input type="hidden" value="{{$band[$i]->send_name}}"  id="msgdata">
+                                                        <input type="hidden" value="{{$band[$i]->under_id}}"  id="send_id">
+                                                        <input type="hidden" value="{{$band[$i]->boss_id}}"  id="boss_id">
                                                 </span>
                                                     <span class="pull-right badge badge-info"></span>
                                                     </div>
@@ -683,30 +688,38 @@
                 }
             })
         })
-        $("#messages li").each(function (i) {
-            var send_name = $(this).find('#msgdata').text();
+        $("#messages .bandmsg").each(function (i) {
+            var send_name = $(this).find('#msgdata').val();
             var content = $(this).find("#hiddata").val();
-            console.log(send_name);
+            var send_id = $(this).find("#send_id").val();
+            var boss_id = $(this).find("#boss_id").val();
+            console.log(send_name+content+send_id +boss_id);
             $(this).click(function () {
-                layer.msg('你确定要绑定？'+send_name, {
+                layer.msg(send_name+"："+content, {
                     time: 0 //不自动关闭
-                    ,btn: ['确定', '取消'+content]
+                    ,btn: ['确定', '取消']
                     ,yes: function(index){
-                        layer.close(index);
-                        layer.msg('绑定成功');
+                        $.ajax({
+                            type:"post",
+                            url:"Service/bok",
+                            data:{"send_id":send_id,"boss_id":boss_id,_token:"{{csrf_token()}}"},
+                            dataType:'json',
+                            success:function(data) {
+                                if (data.status==0) {
+                                     layer.close(index);
+                                     layer.msg('绑定成功');
+                                }
+                                else{
+                                     layer.close(index);
+                                     layer.msg(data.message);
+                                }
+                            }
+
+                        })
+                       
                     }
                 });
             })
-        })
-        $('.msg').on('click', function () {
-            layer.msg('你确定要绑定？', {
-                time: 0 //不自动关闭
-                ,btn: ['确定', '取消']
-                ,yes: function(index){
-                    layer.close(index);
-                    layer.msg('绑定成功');
-                }
-            });
         })
 
         $(document).ready(function () {
@@ -714,18 +727,19 @@
             var socket = io('http://'+document.domain+':2120');
             // 连接后登录
             socket.on('connect', function(){
-                socket.emit('login', {{$user->id}});
+                socket.emit('login', {{$user->member_id}});
             });
             // 后端推送来消息时
             socket.on('new_msg', function(msg){
                  if (msg !=="") {
+                     var send = msg.split("!@");
                      $(".badge-important").text(parseInt($(".badge-important").text()) + 1);
                      var html = '<li>' +
                          '<a href="javascript:;" class="msg">' +
                          '<div class="clearfix">' +
                          '<span class="pull-left">' +
                          '<i class="btn btn-xs no-hover btn-pink icon-comment"></i>' +
-                         msg +
+                         send[1] +"想绑定你为BOSS"+
                          '</span>' +
                          '<span class="pull-right badge badge-info"></span>' +
                          '</div>' +
@@ -734,12 +748,27 @@
                      $("#messages").append(html);
 
                      $('.msg').on('click', function () {
-                         layer.msg('你确定要绑定？', {
+                         layer.msg(send[1]+"："+send[0], {
                              time: 0 //不自动关闭
                              ,btn: ['确定', '取消']
                              ,yes: function(index){
-                                 layer.close(index);
-                                 layer.msg('绑定成功');
+                                      $.ajax({
+                                        type:"post",
+                                        url:"Service/bok",
+                                        data:{"send_id":send[3],"boss_id":send[2],_token:"{{csrf_token()}}"},
+                                        dataType:'json',
+                                        success:function(data) {
+                                            if (data.status==0) {
+                                                 layer.close(index);
+                                                 layer.msg('绑定成功');
+                                            }
+                                            else{
+                                                 layer.close(index);
+                                                 layer.msg(data.message);
+                                            }
+                                        }
+
+                                    })
                              }
                          });
                      })

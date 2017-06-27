@@ -13,16 +13,13 @@ class CreateMembersTable extends Migration
     public function up()
     {
         Schema::create('members', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
+            $table->increments('member_id')->unsigned();
             $table->string("user_name",20);
             $table->string('password',50);
             $table->string('email',100);
-            $table->integer('phone');
+            $table->integer('phone')->unique();
             $table->string("photo",100);
             $table->timestamps();
-        });
-         Schema::table('members', function($table)
-        {
             $table->string("uuid",50);
         });
     }
